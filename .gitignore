@@ -1,4 +1,4 @@
 .qodo
 .env
 .vscode
-.tts_apis\__pycache__
+tts_apis/__pycache__
