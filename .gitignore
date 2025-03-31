@@ -1,4 +1,5 @@
 .qodo
 .env
 .vscode
+generated_audios
 tts_apis/__pycache__
