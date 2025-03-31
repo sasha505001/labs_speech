@@ -4,7 +4,7 @@ import time
 # https://pypi.org/project/vosk-tts/
 # Vosk TTS
 # model: vosk-model-tts-ru-0.7-multi
-# Языки: 
+# Языки: Русский
 def create_vosktts_audio(text):
     model = Model(model_name="vosk-model-tts-ru-0.6-multi")
     synth = Synth(model)
@@ -14,4 +14,3 @@ def create_vosktts_audio(text):
 
 
 # create_vosktts_audio("ну работаем что делать")
-create_vosktts_audio("what is life babe i am hurt me i hurt me myself what is life")
