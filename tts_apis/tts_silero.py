@@ -21,7 +21,7 @@ def create_selero_audio(text):
     if audio_tensor.ndim == 1:
         audio_tensor = audio_tensor.unsqueeze(0)
     # Сохранение в файл
-    filename = "silero_" + str(time.time() * 1000) + ".wav"
+    filename = ".\\generated_audios\\silero_" + str(time.time() * 1000) + ".wav"
     torchaudio.save(filename, audio_tensor.cpu(), sample_rate=48000, format='wav')
     return filename
 

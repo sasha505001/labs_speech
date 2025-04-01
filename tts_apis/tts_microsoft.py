@@ -25,7 +25,7 @@ def crate_microsoft_audio(text):
     inputs = processor(text=text, return_tensors="pt").to(device)
 
     # Путь к генерируемому файлу
-    output_filename = "microsoft_tts" + str(time.time() * 1000) + ".mp3"
+    output_filename = ".\\generated_audios\\microsoft_tts" + str(time.time() * 1000) + ".mp3"
     # random vector, meaning a random voice
     speaker_embeddings = torch.randn((1, 512)).to(device)
     speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)

@@ -8,7 +8,7 @@ import time
 def create_vosktts_audio(text):
     model = Model(model_name="vosk-model-tts-ru-0.6-multi")
     synth = Synth(model)
-    name = "vosktts_" + str(time.time() * 1000) + ".wav"
+    name = ".\\generated_audios\\vosktts_" + str(time.time() * 1000) + ".wav"
     synth.synth(text, name, speaker_id=2, noise_level=0.6667, speech_rate=1.0)
     return name
 

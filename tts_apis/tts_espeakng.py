@@ -5,7 +5,7 @@ import time
 # model: eSpeak NG
 # Языки: Английский
 def create_espeakng_audio(text):
-    name = "espeak_" + str(time.time() * 1000) + ".mp3"
+    name = ".\\generated_audios\\espeak_" + str(time.time() * 1000) + ".mp3"
     mySpeaker = espeakng.Speaker()
     mySpeaker.say(text, export_path=name)
     return name
