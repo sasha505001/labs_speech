@@ -20,12 +20,11 @@ def crate_microsoft_audio(text):
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts").to(device)
     # load the vocoder, that is the voice encoder
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan").to(device)
-    # we load this dataset to get the speaker embeddings
-    # embeddings_dataset = load_dataset("Matthijs/cmu-arctic-xvectors", split="validation")
 
     # preprocess text
     inputs = processor(text=text, return_tensors="pt").to(device)
 
+    # Путь к генерируемому файлу
     output_filename = "microsoft_tts" + str(time.time() * 1000) + ".mp3"
     # random vector, meaning a random voice
     speaker_embeddings = torch.randn((1, 512)).to(device)
@@ -33,8 +32,3 @@ def crate_microsoft_audio(text):
 
     sf.write(output_filename, speech.cpu().numpy(), samplerate=16000)
     return output_filename
-
-
-# Проверки работоспособности
-#crate_microsoft_audio("today i work on full day")
-crate_microsoft_audio("привет жестокий мир")

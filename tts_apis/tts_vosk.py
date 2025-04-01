@@ -12,5 +12,3 @@ def create_vosktts_audio(text):
     synth.synth(text, name, speaker_id=2, noise_level=0.6667, speech_rate=1.0)
     return name
 
-
-# create_vosktts_audio("ну работаем что делать")

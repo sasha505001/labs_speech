@@ -14,7 +14,3 @@ def create_pyttsx3_audio(text):
     engine.runAndWait()
     return name
 
-# проверки работоспособности
-# using_pyttsx3_tts("нежданно негаданно")
-# using_pyttsx3_tts("english text sounds")
-# using_pyttsx3_tts("hi")

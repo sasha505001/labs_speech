@@ -10,8 +10,3 @@ def create_gtts_audio(text):
     tts = gTTS(text=text, lang='ru')
     tts.save(name)
     return name
-
-# проверки работоспособности
-# using_google_tts("серьёзные дела")
-# using_google_tts("how it's sounds in english")
-# using_google_tts("hi")

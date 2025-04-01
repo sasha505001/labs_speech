@@ -25,5 +25,3 @@ def create_selero_audio(text):
     torchaudio.save(filename, audio_tensor.cpu(), sample_rate=48000, format='wav')
     return filename
 
-# Проверки работоспособности
-# create_selero_audio("привет жестокий мир")

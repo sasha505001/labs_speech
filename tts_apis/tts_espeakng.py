@@ -9,6 +9,3 @@ def create_espeakng_audio(text):
     mySpeaker = espeakng.Speaker()
     mySpeaker.say(text, export_path=name)
     return name
-
-# generate_audio_with_espeakng("hello world")
-# generate_audio_with_espeakng("hi")
