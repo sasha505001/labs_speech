@@ -1,6 +1,7 @@
 import torch
 import torchaudio
 import time
+import os
 
 # https://github.com/snakers4/silero-models
 # silero
@@ -20,8 +21,13 @@ def create_selero_audio(text):
     
     if audio_tensor.ndim == 1:
         audio_tensor = audio_tensor.unsqueeze(0)
-    # Сохранение в файл
-    filename = ".\\generated_audios\\silero_" + str(time.time() * 1000) + ".wav"
-    torchaudio.save(filename, audio_tensor.cpu(), sample_rate=48000, format='wav')
-    return filename
+
+    # путь к папке со сгенерированными файлами
+    path = os.getcwd() + "\\generated_audios\\"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    # путь к генерируемому файлу
+    path = path + "silero_" + str(time.time() * 1000) + ".wav"
+    torchaudio.save(path, audio_tensor.cpu(), sample_rate=48000, format='wav')
+    return path
 

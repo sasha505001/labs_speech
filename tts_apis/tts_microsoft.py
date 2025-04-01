@@ -3,6 +3,7 @@ from datasets import load_dataset
 import torch
 import soundfile as sf
 import time
+import os
 
 
 # https://thepythoncode.com/article/convert-text-to-speech-in-python
@@ -24,11 +25,17 @@ def crate_microsoft_audio(text):
     # preprocess text
     inputs = processor(text=text, return_tensors="pt").to(device)
 
-    # Путь к генерируемому файлу
-    output_filename = ".\\generated_audios\\microsoft_tts" + str(time.time() * 1000) + ".mp3"
+    
     # random vector, meaning a random voice
     speaker_embeddings = torch.randn((1, 512)).to(device)
     speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
 
-    sf.write(output_filename, speech.cpu().numpy(), samplerate=16000)
-    return output_filename
+    # путь к папке со сгенерированными файлами
+    path = os.getcwd() + "\\generated_audios\\"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    # Путь к генерируемому файлу
+    path = path + "microsoft_tts" + str(time.time() * 1000) + ".mp3"
+
+    sf.write(path, speech.cpu().numpy(), samplerate=16000)
+    return path
