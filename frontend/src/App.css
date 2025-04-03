@@ -1,0 +1,34 @@
+h1 {
+  text-align: center;
+}
+
+#model-select {
+  padding: 10px 70px 10px 5px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.all_doc, h2 {
+  margin: 20px 40px;
+}
+
+#text-to-convert {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+#convert-button {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#player_audio {
+  width: 100%;
+}

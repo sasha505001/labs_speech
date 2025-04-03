@@ -3,3 +3,4 @@
 .vscode
 generated_audios
 tts_apis/__pycache__
+frontend/node_modules
