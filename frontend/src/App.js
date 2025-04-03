@@ -1,12 +1,21 @@
-import './App.css';
 import { useState, useEffect } from "react";
+import './App.css';
+import ModelSelect from './components/ModelSelect';
+import TextInput from './components/TextInput';
+import ConvertButton from './components/ConvertButton';
+import AudioPlayer from './components/AudioPlayer';
 
 
-function App() {
+function App() { 
   
   const [models, setModels] = useState([]); // список доступных моделей
   const [selectedModel, setSelectedModel] = useState("Espeak NG"); // выбранная модель
   const [audioURL, setAudioURL] = useState(''); // URL до сгенерированного аудио
+  const [text, setText] = useState('');
+
+  const handleClicked = () => {
+    "http://127.0.0.1:5000/apis/names"
+  }
 
   // стартовая фигня по крайней мере 
   useEffect(() => { 
@@ -25,28 +34,14 @@ function App() {
     <div className="hell">
       <h1>Text-to-Speech Converter</h1>
       <p>
-        <select id="model-select" name= "model" className="all_doc" defaultValue="Espeak NG">
-          <option value="ESpeak NG">ESpeak NG</option>
-          <option value="Google TTS">Google TTS</option>
-          <option value="Pyttsx3">Pyttsx3</option>
-          <option value="Silero">Silero</option>
-          <option value="Vosk TTS">Vosk TTS</option>
-        </select>
+      <ModelSelect models={models} selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
         <br />
-        <textarea
-          id = "text-to-convert"
-          className="all_doc"
-          rows="4"
-          placeholder="Enter your text here..."
-        ></textarea>
+        <TextInput text={text} setText={setText} />
         <br />
-        <button id = "convert-button" className="all_doc">Convert to Speech</button>
+        <ConvertButton handleClicked={handleClicked} />
       </p>
       <h2>Audio output</h2>
-        <audio id='player_audio' className="all_doc" controls>
-          <source src={audioURL || null} type="audio/mpeg" />
-          Ваш браузер не поддерживает аудио.
-        </audio>
+      <AudioPlayer audioURL={audioURL} />
     </div>
   );
 }
