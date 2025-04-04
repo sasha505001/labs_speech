@@ -10,7 +10,7 @@ function App() {
   
   const [models, setModels] = useState([]); // список доступных моделей
   const [selectedModel, setSelectedModel] = useState(); // выбранная модель
-  const [audioURL, setAudioURL] = useState(null); // URL до сгенерированного аудио
+  const [audioBLob, setAudioBLob] = useState(); // URL до сгенерированного аудио
   const [text, setText] = useState('');
   const [supportedLang, setSupportedLang] = useState('');
 
@@ -23,7 +23,7 @@ function App() {
       setSelectedModel(data[0]) // выбираю первую модель 
       //console.log(data)
       //console.log(data[0])
-      setAudioURL(null)
+      console.log(null)
       setSupportedLang('en')
     })
     .catch(error => console.error(error))
@@ -47,11 +47,11 @@ function App() {
       <ConvertButton 
       selectedModel = {selectedModel} 
       text = {text}  
-      audioURL={audioURL}
-      setAudioURL={setAudioURL}/>
+      audioBLob={audioBLob}
+      setAudioBLob={setAudioBLob}/>
       
       <h2>Audio output</h2>
-      <AudioPlayer audioURL={audioURL} setAudioURL={setAudioURL} />
+      <AudioPlayer audioBLob={audioBLob} setAudioBLob={setAudioBLob} />
     </div>
   );
 }

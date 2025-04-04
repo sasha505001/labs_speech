@@ -24,7 +24,7 @@ MY_API_TTS = {
     "Vosk TTS": tts_vosk.create_vosktts_audio
 }
 
-# получаю аудио
+# отправляю созданное аудио клиенту
 @app.route('/generated_audios/<filename>', methods=['GET'])
 def get_audio(filename):
     if not filename:
@@ -78,7 +78,7 @@ def get_api_names():
             return jsonify({"error": "models is None"}), 500
         return jsonify(models), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e) + "что то пошло не так"}), 500
 
 
 # Код для где выполняется Text-to-Speech
