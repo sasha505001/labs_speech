@@ -8,6 +8,9 @@ from tts_apis.tts_vosk import create_vosktts_audio
 
 
 
+# todo неправильные тесты
+# когда вводится неверный язык
+
 # tts_espeakng
 create_espeakng_audio("hello world")
 create_espeakng_audio("hi")

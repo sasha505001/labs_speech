@@ -15,7 +15,8 @@ def create_vosktts_audio(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # путь к генерируемому файлу
-    path = path + "vosktts_" + str(time.time() * 1000) + ".wav"
+    filename = "vosktts_" + str(time.time() * 1000) + ".wav"
+    path = path + filename
     synth.synth(text, path, speaker_id=2, noise_level=0.6667, speech_rate=1.0)
-    return path
+    return filename
 

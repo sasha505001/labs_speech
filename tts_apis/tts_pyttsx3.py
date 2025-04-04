@@ -15,8 +15,9 @@ def create_pyttsx3_audio(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # Путь к генерируемому файлу
-    path = path + "pytttsx3_" + str(time.time() * 1000) + ".mp3"
+    filename = "pyttsx3_" + str(time.time() * 1000) + ".mp3"
+    path = path + filename
     engine.save_to_file(text, path)
     engine.runAndWait()
-    return path
+    return filename
 

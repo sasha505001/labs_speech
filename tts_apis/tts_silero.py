@@ -27,7 +27,8 @@ def create_selero_audio(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # путь к генерируемому файлу
-    path = path + "silero_" + str(time.time() * 1000) + ".wav"
+    filename = "silero_" + str(time.time() * 1000) + ".wav"
+    path = path + filename
     torchaudio.save(path, audio_tensor.cpu(), sample_rate=48000, format='wav')
-    return path
+    return filename
 

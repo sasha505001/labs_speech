@@ -12,6 +12,7 @@ def create_espeakng_audio(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # путь к генерируемому файлу
-    path = path + "espeak_" + str(time.time() * 1000) + ".mp3"
+    filename = "espeak_" + str(time.time() * 1000) + ".mp3"
+    path = path + filename
     mySpeaker.say(text, export_path=path)
-    return path
+    return filename

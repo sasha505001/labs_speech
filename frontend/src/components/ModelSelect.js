@@ -2,11 +2,23 @@
 import React from 'react';
 import './common.css';
 import './ModelSelect.css';
+import axios from 'axios';
 
 
-function ModelSelect({ models, selectedModel, setSelectedModel }) {
+function ModelSelect({ models, selectedModel, setSelectedModel, setSupportedLang }) {
   const onChangeModelName = (e) => {
+
     setSelectedModel(e.target.value);
+    try {
+      axios.get(`http://127.0.0.1:5000/apis/get_supported_languages/${e.target.value}`)
+      .then(res => {
+        setSupportedLang(res.data.languages);
+        console.log(res.data.languages);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    
     console.log(e.target.value);
   }
   return (

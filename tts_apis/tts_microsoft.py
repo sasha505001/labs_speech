@@ -35,7 +35,8 @@ def crate_microsoft_audio(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # Путь к генерируемому файлу
-    path = path + "microsoft_tts" + str(time.time() * 1000) + ".mp3"
+    filename = "microsoft_tts_" + str(time.time() * 1000) + ".mp3"
+    path = path + filename
 
     sf.write(path, speech.cpu().numpy(), samplerate=16000)
-    return path
+    return filename

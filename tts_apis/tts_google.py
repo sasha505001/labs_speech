@@ -15,6 +15,7 @@ def create_gtts_audio(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # путь к генерируемому файлу
-    path = path + "gtts_" + str(time.time() * 1000) + ".mp3"
+    filename = "gtts_" + str(time.time() * 1000) + ".mp3"
+    path = path + filename
     tts.save(path)
-    return path
+    return filename
