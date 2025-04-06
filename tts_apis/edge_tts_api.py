@@ -5,7 +5,7 @@ import time
 
 # https://github.com/rany2/edge-tts
 # Языки: Русский(можно и английский если выбрать нужный голос)
-async def async_create_edge_audio(text):
+async def edge_audio_creator_async(text):
     try:
         communicate = edge_tts.Communicate(text=text, voice="ru-RU-SvetlanaNeural")
         # путь к папке со сгенерированными файлами
@@ -20,6 +20,5 @@ async def async_create_edge_audio(text):
         print(f"An error occurred while using Edge TTS: {e}")
         return None
 
-# Тесты
-# asyncio.run(async_create_edge_audio("Привет"))   
+  
 

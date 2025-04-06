@@ -1,35 +1,56 @@
 # тестируемые API
-from tts_apis.tts_espeakng import create_espeakng_audio
-from tts_apis.tts_google import create_gtts_audio
-from tts_apis.tts_microsoft import crate_microsoft_audio
-from tts_apis.tts_pyttsx3 import create_pyttsx3_audio
-from tts_apis.tts_silero import create_selero_audio
-from tts_apis.tts_vosk import create_vosktts_audio
+from tts_apis import edge_tts_api
+from tts_apis import espeakng_tts_api
+from tts_apis import google_tts_api
+from tts_apis import microsoft_tts_api
+from tts_apis import pyttsx3_tts_api
+from tts_apis import silero_tts_api
+from tts_apis import vosk_tts_api
+
+import asyncio
 
 
+
+
+# TODO:Возможно можно придумать лучше тесты
+# Делаю хоть какое то разделение по тестам
+# тестируется отчасти вручную 
+# модель генерирует аудиозаписи которые потом нужно проверять вручную
 
 # todo неправильные тесты
 # когда вводится неверный язык
 
-# tts_espeakng
-create_espeakng_audio("hello world")
-create_espeakng_audio("hi")
+MY_API_TTS_ASYNC = {
+    "Edge TTS": edge_tts_api.edge_audio_creator_async,
+    "Espeak NG": espeakng_tts_api.espeakng_audio_creator_async,
+    "Google TTS": google_tts_api.gtts_audio_creator_async,
+    "Microsoft TTS": microsoft_tts_api.microsoft_audio_creator_async,
+    "Pyttsx3": pyttsx3_tts_api.pyttsx3_audio_creator_async,
+    "Silero": silero_tts_api.selero_audio_creator_async,
+    "Vosk TTS": vosk_tts_api.vosk_audio_creator_async
+}
 
-# tts_google
-create_gtts_audio("серьёзные дела")
-create_gtts_audio("how it's sounds in english")
-create_gtts_audio("hi")
+# Тестируются только асинхронные функции на доступных им языках
 
-# tts_microsoft
-crate_microsoft_audio("today i work on full day")
+# Edge TTS
+asyncio.run(MY_API_TTS_ASYNC["Edge TTS"]("Привет")) 
 
-# tts_pyttsx3
-create_pyttsx3_audio("нежданно негаданно")
-create_pyttsx3_audio("english text sounds")
-create_pyttsx3_audio("hi")
+# Espeak NG
+asyncio.run(MY_API_TTS_ASYNC["Espeak NG"]("Hello, world!"))
 
-# tts_silero
-create_selero_audio("привет жестокий мир")
+# Google TTS
+asyncio.run(MY_API_TTS_ASYNC["Google TTS"]("Hello, world!"))
+asyncio.run(MY_API_TTS_ASYNC["Google TTS"]("Привет мир!"))
 
-# tts_vosk
-create_vosktts_audio("ну работаем что делать")
+# Microsoft TTS
+asyncio.run(MY_API_TTS_ASYNC["Microsoft TTS"]("hello fucking world!"))
+
+# Pyttsx3
+asyncio.run(MY_API_TTS_ASYNC["Pyttsx3"]("Hello, world!"))
+asyncio.run(MY_API_TTS_ASYNC["Pyttsx3"]("привет мир!"))
+
+# Silero
+asyncio.run(MY_API_TTS_ASYNC["Silero"]("Привет мир!"))
+
+# Vosk TTS
+asyncio.run(MY_API_TTS_ASYNC["Vosk TTS"]("Привет мир!"))
