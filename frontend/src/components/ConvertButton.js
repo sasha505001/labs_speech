@@ -1,13 +1,16 @@
 // ConvertButton.js
 import React from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import './ConvertButton.css';
 import './common.css';
 
 
 function ConvertButton({selectedModel, text, onConvertClick}) {
+  const [isLoading, setIsLoading] = useState(false);
   // что должно быть при нажатии кнопки: генерация аудио и подстановка его в плеер
   const handleClicked = async() => {
+    setIsLoading(true);
     try {
       // данные для запроса: модель - текст
       let data = {"model": selectedModel, "text": text}
@@ -31,14 +34,19 @@ function ConvertButton({selectedModel, text, onConvertClick}) {
       }
     } catch (error) {
       console.error(error);
+    } finally
+    {
+      setIsLoading(false);
     }
   }
 
-  
-
   return (
-    <button id="convert-btn" className="all_doc" onClick={handleClicked}>
-      Convert Text to Speech
+    <button 
+    id="convert-btn" 
+    className="all_doc" 
+    onClick={handleClicked}
+    disabled={isLoading}>
+      {isLoading ? 'Генерация файла...' : 'Convert Text to Speech'}
     </button>
   );
 }

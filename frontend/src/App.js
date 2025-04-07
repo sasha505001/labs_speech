@@ -69,7 +69,7 @@ function App() {
       onConvertClick={handleConvertClick}/>
       
       <h2>Audio output</h2>
-      {audioURL!==null && audioURL !== undefined && <AudioPlayer audioURL={audioURL} />}
+      {audioURLRef!==null && <AudioPlayer audioURLRef={audioURLRef} />}
       {/* {audioURL && <audio id="player_audio" className="all_doc" source src={audioURL} controls>Ваш браузер не поддерживает элемент audio.</audio>} */}
       <label className="all_doc">{audioURLRef ? audioURLRef : 'Аудиофайл не выбран'}</label>
       <br />

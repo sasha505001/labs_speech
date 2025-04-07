@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import './common.css';
 import './AudioPlayer.css';
 
-function AudioPlayer({ audioURL }) {
-  
+function AudioPlayer({ audioURLRef }) {
   return <audio id="player_audio" 
   className="all_doc" 
-  src={audioURL} 
+  src={audioURLRef} 
   controls>Ваш браузер не поддерживает элемент audio.</audio>
 }
 
