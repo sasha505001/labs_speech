@@ -1,12 +1,23 @@
+# Server
 from flask import Flask, render_template, request, jsonify, send_file, Response
 from flask_cors import CORS
-from tts_apis import tts_espeakng, tts_google, tts_microsoft, tts_pyttsx3, tts_silero, tts_vosk
+# API
+from tts_apis import edge_tts_api
+from tts_apis import espeakng_tts_api
+from tts_apis import google_tts_api
+from tts_apis import microsoft_tts_api
+from tts_apis import pyttsx3_tts_api
+from tts_apis import silero_tts_api
+from tts_apis import vosk_tts_api
+
 import os
+import asyncio
 app = Flask(__name__)
 CORS(app) # Разрешаем запросы с фронтенда (с другого домена/порта)
 
 API_AND_SUPP_LANG = {
-    "ESpeak NG": "en",
+    "Edge TTS": "ru",
+    "Espeak NG": "en",
     "Google TTS": "en, ru",
     "Microsoft TTS": "en",
     "Pyttsx3": "en, ru",
@@ -16,12 +27,13 @@ API_AND_SUPP_LANG = {
 
 # список названий api а также функции в которых они реализованы, достаточно лишь имя модели и функция будет выполнена
 MY_API_TTS = {
-    "ESpeak NG": tts_espeakng.create_espeakng_audio,
-    "Google TTS": tts_google.create_gtts_audio,
-    "Microsoft TTS": tts_microsoft.crate_microsoft_audio,
-    "Pyttsx3": tts_pyttsx3.create_pyttsx3_audio,
-    "Silero": tts_silero.create_selero_audio,
-    "Vosk TTS": tts_vosk.create_vosktts_audio
+    "Edge TTS": edge_tts_api.edge_audio_creator_async,
+    "Espeak NG": espeakng_tts_api.espeakng_audio_creator_async,
+    "Google TTS": google_tts_api.gtts_audio_creator_async,
+    "Microsoft TTS": microsoft_tts_api.microsoft_audio_creator_async,
+    "Pyttsx3": pyttsx3_tts_api.pyttsx3_audio_creator_async,
+    "Silero": silero_tts_api.selero_audio_creator_async,
+    "Vosk TTS": vosk_tts_api.vosk_audio_creator_async
 }
 
 # отправляю созданное аудио клиенту
@@ -38,19 +50,21 @@ def get_audio(filename):
 # получаю список поддерживаемых языков для модели
 @app.route('/apis/get_supported_languages/<api_name>', methods=['GET'])
 def get_supported_languages(api_name):
+    if api_name not in API_AND_SUPP_LANG:
+        return jsonify({"error": "API not found"}), 404
     sup_lang = API_AND_SUPP_LANG[api_name]
     return jsonify({"languages": sup_lang})
 
 
 
-def use_tts_my_apis(text, api_name):
+async def use_tts_my_apis(text, api_name):
     path_to_file = ""
     if not text:
         print("Error: No text provided")
         return ""
     if api_name in MY_API_TTS:
         try:
-            filename = MY_API_TTS[api_name](text)
+            filename = await MY_API_TTS[api_name](text)
             print(filename)
             return filename 
         except Exception as e:
@@ -84,7 +98,7 @@ def get_api_names():
 # Код для где выполняется Text-to-Speech
 # TODO нужно сделать чтобы при вводе языка который не поддерживается всё не останавливалось и продолжало работать
 @app.route('/api/convert', methods=['POST'])
-def convert_text_to_speech():
+async def convert_text_to_speech():
     data = request.get_json()
     # извлекаю данные из запроса
     text = data.get('text')
@@ -95,7 +109,7 @@ def convert_text_to_speech():
     if not text: 
         return jsonify({'error': 'No text provided'}), 400
     try:
-        path_to_audio = use_tts_my_apis(text, model)
+        path_to_audio = await use_tts_my_apis(text, model)
         return jsonify({'path': path_to_audio}), 200
     except Exception as e:
         return jsonify({'error': str("что то пошло не так")}), 500

@@ -1,11 +1,11 @@
 // ConvertButton.js
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import './ConvertButton.css';
 import './common.css';
 
 
-function ConvertButton({selectedModel, text, audioBLob, setAudioBLob}) {
+function ConvertButton({selectedModel, text, onConvertClick}) {
   // что должно быть при нажатии кнопки: генерация аудио и подстановка его в плеер
   const handleClicked = async() => {
     try {
@@ -21,8 +21,12 @@ function ConvertButton({selectedModel, text, audioBLob, setAudioBLob}) {
         await axios.get(path,
           {responseType: 'blob'} 
         ).then(res => {
-          let audioBLob = res.data;
-          setAudioBLob(audioBLob)
+          let audioBlob = res.data;
+          //console.log('audioBlob:', audioBlob);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          //console.log('audioUrl:', audioUrl);
+          console.log("передал данные")
+          onConvertClick(audioUrl);
         })
       }
     } catch (error) {
