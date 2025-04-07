@@ -25,10 +25,7 @@ function ConvertButton({selectedModel, text, onConvertClick}) {
           {responseType: 'blob'} 
         ).then(res => {
           let audioBlob = res.data;
-          //console.log('audioBlob:', audioBlob);
           const audioUrl = URL.createObjectURL(audioBlob);
-          //console.log('audioUrl:', audioUrl);
-          console.log("передал данные")
           onConvertClick(audioUrl);
         })
       }
