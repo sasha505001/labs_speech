@@ -11,14 +11,13 @@ function App() {
   const [models, setModels] = useState([]); // список доступных моделей
   const [selectedModel, setSelectedModel] = useState(); // выбранная модель
   const [audioURL, setAudioURL] = useState(null); // URL до сгенерированного аудио
-  const audioURLRef = useMemo(() => {return audioURL;}, [audioURL])
+  const audioURLRef = useMemo(() =>  audioURL, [audioURL])
   const [text, setText] = useState('');
   const [supportedLang, setSupportedLang] = useState('');
 
   const handleConvertClick = useCallback(async (AudioURL) =>  {
     if(AudioURL){
       setAudioURL(AudioURL);
-      //console.log("blob is\n" + AudioURL);
     }
     else
       console.log('AudioURL  is null');
@@ -39,7 +38,6 @@ function App() {
       .then(data => {
         setSupportedLang(data.languages)
       })
-      //setSupportedLang('ru')
     })
     .catch(error => console.error(error))
     
@@ -71,7 +69,8 @@ function App() {
       onConvertClick={handleConvertClick}/>
       
       <h2>Audio output</h2>
-      {audioURL && <audio id="player_audio" className="all_doc" source src={audioURL} controls>Ваш браузер не поддерживает элемент audio.</audio>}
+      {audioURL!==null && audioURL !== undefined && <AudioPlayer audioURL={audioURL} />}
+      {/* {audioURL && <audio id="player_audio" className="all_doc" source src={audioURL} controls>Ваш браузер не поддерживает элемент audio.</audio>} */}
       <label className="all_doc">{audioURLRef ? audioURLRef : 'Аудиофайл не выбран'}</label>
       <br />
       <label className="all_doc">{audioURL ? audioURL : 'Аудиофайл не выбран'}</label>
