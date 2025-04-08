@@ -1,56 +1,29 @@
-# тестируемые API
-from tts_apis import edge_tts_api
-from tts_apis import espeakng_tts_api
-from tts_apis import google_tts_api
-from tts_apis import microsoft_tts_api
-from tts_apis import pyttsx3_tts_api
-from tts_apis import silero_tts_api
-from tts_apis import vosk_tts_api
+# Исходная точка для запуска тестов
 
-import asyncio
+# Импортируем тесты
+from mytest import test_tts_apis
+from mytest import test_converter
+from mytest import test_stt
 
 
-
-
-# TODO:Возможно можно придумать лучше тесты
-# Делаю хоть какое то разделение по тестам
-# тестируется отчасти вручную 
-# модель генерирует аудиозаписи которые потом нужно проверять вручную
-
-# todo неправильные тесты
-# когда вводится неверный язык
-
-MY_API_TTS_ASYNC = {
-    "Edge TTS": edge_tts_api.edge_audio_creator_async,
-    "Espeak NG": espeakng_tts_api.espeakng_audio_creator_async,
-    "Google TTS": google_tts_api.gtts_audio_creator_async,
-    "Microsoft TTS": microsoft_tts_api.microsoft_audio_creator_async,
-    "Pyttsx3": pyttsx3_tts_api.pyttsx3_audio_creator_async,
-    "Silero": silero_tts_api.selero_audio_creator_async,
-    "Vosk TTS": vosk_tts_api.vosk_audio_creator_async
+all_tests = {
+    "tts_apis": test_tts_apis.run_tests,
+    "converter_audio": test_converter.run_tests,
+    "speech_to_text": test_stt.run_tests
 }
 
-# Тестируются только асинхронные функции на доступных им языках
+names_of_test = list(all_tests.keys())
 
-# Edge TTS
-asyncio.run(MY_API_TTS_ASYNC["Edge TTS"]("Привет")) 
+request_for_test = ""
 
-# Espeak NG
-asyncio.run(MY_API_TTS_ASYNC["Espeak NG"]("Hello, world!"))
+for i in range(len(names_of_test)):
+    request_for_test += f"{i} - {names_of_test[i]}\n"
 
-# Google TTS
-asyncio.run(MY_API_TTS_ASYNC["Google TTS"]("Hello, world!"))
-asyncio.run(MY_API_TTS_ASYNC["Google TTS"]("Привет мир!"))
+request_for_test = request_for_test + "Введите номер теста(выше приведены варианты тестов): "
+cur_test = input(request_for_test)
+# проверка на корректность ввода
+if cur_test.isdigit() and int(cur_test) < len(names_of_test) and int(cur_test) >= 0:
+    all_tests[names_of_test[int(cur_test)]]()
+else:
+    print("Некорректный ввод")
 
-# Microsoft TTS
-asyncio.run(MY_API_TTS_ASYNC["Microsoft TTS"]("hello fucking world!"))
-
-# Pyttsx3
-asyncio.run(MY_API_TTS_ASYNC["Pyttsx3"]("Hello, world!"))
-asyncio.run(MY_API_TTS_ASYNC["Pyttsx3"]("привет мир!"))
-
-# Silero
-asyncio.run(MY_API_TTS_ASYNC["Silero"]("Привет мир!"))
-
-# Vosk TTS
-asyncio.run(MY_API_TTS_ASYNC["Vosk TTS"]("Привет мир!"))
