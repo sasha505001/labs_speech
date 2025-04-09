@@ -1,8 +1,14 @@
+# Системные папки и файлы
 .qodo
 .env
+.venv
 .vscode
-generated_audios
 frontend/node_modules
+# кэш файлы
 tts_apis/__pycache__
 working_with_audio/__pycache__
 mytest/__pycache__
+# Папки с аудио
+generated_audios
+# ключи
+chatbot/keys.json
