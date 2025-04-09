@@ -1,5 +1,10 @@
 .qodo
 .env
+.venv
+chatbot
+mytest\__pycache__
+working_with_audio
+mytest
 .vscode
 generated_audios
 tts_apis/__pycache__
