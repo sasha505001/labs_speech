@@ -1,0 +1,13 @@
+import os
+from working_with_audio.mix_audio import spectral_centroid, centroid_mixing
+
+
+def run_tests():
+    cur_path = os.getcwd()
+    audio1 = os.path.join(cur_path, "mytest", "test_mix","gtts.mp3")
+    print(audio1)
+    audio2 = os.path.join(cur_path, "mytest", "test_mix", "pyttsx3.mp3")
+    audio3 = os.path.join(cur_path, "mytest", "test_mix", "mixed.mp3")
+
+    print(spectral_centroid(audio1))
+    centroid_mixing(audio1, audio2, audio3)

@@ -4,12 +4,14 @@
 from mytest import test_tts_apis
 from mytest import test_converter
 from mytest import test_stt
+from mytest import test_audio_mix
 
 
 all_tests = {
     "tts_apis": test_tts_apis.run_tests,
     "converter_audio": test_converter.run_tests,
-    "speech_to_text": test_stt.run_tests
+    "speech_to_text": test_stt.run_tests, 
+    "mix_audio": test_audio_mix.run_tests
 }
 
 names_of_test = list(all_tests.keys())
