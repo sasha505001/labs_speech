@@ -6,7 +6,7 @@ import './SendButton.css';
 import './common.css';
 
 
-function SendButton({requestText, recivedBotAnswer, setURLs}) {
+function SendButton({requestText, recivedBotAnswer, setURLs, setCenterOfMass}) {
   const [isLoading, setIsLoading] = useState(false);
   // принажатии кнопки :
   // отправляю сообщение боту+
@@ -40,15 +40,25 @@ function SendButton({requestText, recivedBotAnswer, setURLs}) {
           // получаю пути к аудиофайлам
           let audio_names = res_audios.data.names;
           console.log(audio_names);
-          let base_URL = 'http://localhost:5000/generated_audios/';
-          // Получаю аудиофайлы
-          let gtts = await axios.get(base_URL + audio_names[0], {responseType: 'blob'});
-          let pyttsx3 = await axios.get(base_URL + audio_names[1], {responseType: 'blob'});
-          let mixed = await axios.get(base_URL + audio_names[2], {responseType: 'blob'});
+          let gtts = await axios.get('http://localhost:5000/generated_audios/' + audio_names[0],
+             {responseType: 'blob'});
+          let pyttsx3 = await axios.get('http://localhost:5000/generated_audios/' + audio_names[1], 
+            {responseType: 'blob'});
+          let mixed = await axios.get('http://localhost:5000/generated_audios/' + audio_names[2], 
+            {responseType: 'blob'});
           gtts = URL.createObjectURL(gtts.data);
           pyttsx3 = URL.createObjectURL(pyttsx3.data);
           mixed = URL.createObjectURL(mixed.data);
           setURLs(gtts, pyttsx3, mixed);
+          // расчёт центра масс
+          gtts = await axios.get('http://localhost:5000/center_of_mass/' + audio_names[0]);
+          pyttsx3 = await axios.get('http://localhost:5000/center_of_mass/' + audio_names[1]);
+          mixed = await axios.get('http://localhost:5000/center_of_mass/' + audio_names[2]);
+          console.log(gtts, pyttsx3, mixed);
+          gtts = gtts.data.centroid;
+          pyttsx3 = pyttsx3.data.centroid;
+          mixed = mixed.data.centroid;
+          setCenterOfMass(gtts, pyttsx3, mixed);
         }
       }
       else{
@@ -69,7 +79,7 @@ function SendButton({requestText, recivedBotAnswer, setURLs}) {
     className="all_doc" 
     onClick={handleClicked}
     disabled={isLoading}>
-      {isLoading ? 'Генерация файла...' : 'Convert Text to Speech'}
+      {isLoading ? 'In process...' : 'Отправить запрос'}
     </button>
   );
 }

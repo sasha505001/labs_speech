@@ -13,6 +13,17 @@ function App() {
   const [pyttsx3URL, setPyttsx3URL] = useState(null); // URL до сгенерированного аудио
   const [mixedURL, setMixedURL] = useState(null); // URL до сгенерированного аудио
   
+  // Расчет центра масс
+  const [centerOfMassGtts, setCenterOfMassGtts] = useState("");
+  const [centerOfMassPyttsx3, setCenterOfMassPyttsx3] = useState("");
+  const [centerOfMassMixed, setCenterOfMassMixed] = useState("");
+
+  async function setCenterOfMass(centerOfMassGtts, centerOfMassPyttsx3, centerOfMassMixed){
+    setCenterOfMassGtts(centerOfMassGtts);
+    setCenterOfMassPyttsx3(centerOfMassPyttsx3);
+    setCenterOfMassMixed(centerOfMassMixed);
+  }
+
   const recivedBotAnswer = useCallback((answer) => {
     setAnswerText(answer);
   });
@@ -38,6 +49,7 @@ function App() {
       requestText = {requestText}  
       recivedBotAnswer = {recivedBotAnswer}
       setURLs = {setURLs}
+      setCenterOfMass = {setCenterOfMass}
       />
       <h2>Ответ бота</h2>
 
@@ -46,10 +58,13 @@ function App() {
       <br />
       <h1>Audio output</h1>  
       <h2>Google TTS</h2>
+      <label className="all_doc">{"центр масс: " + centerOfMassGtts}</label>
       <AudioPlayer audioURLRef={gttsURL} />
       <h2>Pyttsx3</h2>
+      <label className="all_doc">{"центр масс: " + centerOfMassPyttsx3}</label>
       <AudioPlayer audioURLRef={pyttsx3URL} />
       <h2>Mixed</h2>
+      <label className="all_doc">{"центр масс: " + centerOfMassMixed}</label>
       <AudioPlayer audioURLRef={mixedURL} />
     </div>
   );

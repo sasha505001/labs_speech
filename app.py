@@ -5,7 +5,8 @@ from flask_cors import CORS
 from tts_apis import google_tts_api
 from tts_apis import pyttsx3_tts_api
 # Микширование
-from working_with_audio.mix_audio import centroid_mixing_async
+from working_with_audio.mix_audio import centroid_mixing_async, spectral_centroid_async
+# from working_with_audio.mix_audio import simple_centroid_mix_async
 # Чат бот
 from chatbot.openrouter_bot import openrouter_chat_async
 
@@ -14,6 +15,25 @@ import os
 import asyncio
 app = Flask(__name__)
 CORS(app) # Разрешаем запросы с фронтенда (с другого домена/порта)
+
+
+
+@app.route('/center_of_mass/<filename>', methods=['GET'])
+async def get_centr_of_mass(filename):
+    if not filename:
+        return jsonify({"error": "No filename provided"}), 400
+    
+    path_to_file = os.path.join(os.getcwd(), "generated_audios", filename)
+    
+    try:
+        mean_centroid = await spectral_centroid_async(path_to_file)
+        centroid = str(mean_centroid)
+        return jsonify({"centroid": centroid}), 200
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 
 # отправляю созданное аудио клиенту
 @app.route('/generated_audios/<filename>', methods=['GET'])
