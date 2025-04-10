@@ -1,8 +1,9 @@
 import os
-from working_with_audio.mix_audio import spectral_centroid, centroid_mixing
+import asyncio
+from working_with_audio.mix_audio import spectral_centroid, centroid_mixing_async
 
 
-def run_tests():
+async def run_tests():
     cur_path = os.getcwd()
     audio1 = os.path.join(cur_path, "mytest", "test_mix","gtts.mp3")
     print(audio1)
@@ -10,4 +11,4 @@ def run_tests():
     audio3 = os.path.join(cur_path, "mytest", "test_mix", "mixed.mp3")
 
     print(spectral_centroid(audio1))
-    centroid_mixing(audio1, audio2, audio3)
+    await centroid_mixing_async(audio1, audio2, audio3)

@@ -1,5 +1,5 @@
 # Исходная точка для запуска тестов
-
+import asyncio
 # Импортируем тесты
 from mytest import test_tts_apis
 from mytest import test_converter
@@ -25,7 +25,11 @@ request_for_test = request_for_test + "Введите номер теста(вы
 cur_test = input(request_for_test)
 # проверка на корректность ввода
 if cur_test.isdigit() and int(cur_test) < len(names_of_test) and int(cur_test) >= 0:
-    all_tests[names_of_test[int(cur_test)]]()
+    if( int(cur_test) == 3):
+        print("Тесты для TTS API")
+        asyncio.run(all_tests[names_of_test[int(cur_test)]]())
+    else:
+        all_tests[names_of_test[int(cur_test)]]()
 else:
     print("Некорректный ввод")
 
