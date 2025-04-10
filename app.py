@@ -55,19 +55,20 @@ async def convert_text_to_speech():
         # корень имени файла
         audio_name = str(time.time() * 1000)
         # генерация аудио от 2 api
-        gtts_audio = await google_tts_api.gtts_audio_creator_async(text, audio_name)
-        pyttsx3_audio = await pyttsx3_tts_api.pyttsx3_audio_creator_async(text, audio_name)
+        gtts_audio_name = await google_tts_api.gtts_audio_creator_async(text, audio_name)
+        pyttsx3_audio_name = await pyttsx3_tts_api.pyttsx3_audio_creator_async(text, audio_name)
         # полные пути к аудио
         full_path_to_audios = os.path.join(os.getcwd(), "generated_audios")
-        gtts_audio = os.path.join(full_path_to_audios, gtts_audio)
-        pyttsx3_audio = os.path.join(full_path_to_audios, pyttsx3_audio)
+        gtts_audio = os.path.join(full_path_to_audios, gtts_audio_name)
+        pyttsx3_audio = os.path.join(full_path_to_audios, pyttsx3_audio_name)
         #print(gtts_audio, pyttsx3_audio)
         # смешиваю аудио
-        mixed_audio = os.path.join(full_path_to_audios, audio_name + "_mixed.mp3")
+        mixed_audio_name = audio_name + "_mixed.mp3"
+        mixed_audio = os.path.join(full_path_to_audios, mixed_audio_name)
         await centroid_mixing_async(gtts_audio, pyttsx3_audio, mixed_audio)
-        all_audio_paths = [gtts_audio, pyttsx3_audio, mixed_audio]
+        all_audio_paths = [gtts_audio_name, pyttsx3_audio_name, mixed_audio_name]
         
-        return jsonify({'path': all_audio_paths}), 200
+        return jsonify({'names': all_audio_paths}), 200
     except Exception as e:
         return jsonify({'error': str("что то пошло не так")}), 500
 

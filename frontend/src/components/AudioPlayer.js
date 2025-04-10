@@ -5,6 +5,10 @@ import './common.css';
 import './AudioPlayer.css';
 
 function AudioPlayer({ audioURLRef }) {
+
+  if(!audioURLRef){
+    return null;
+  }
   return <audio id="player_audio" 
   className="all_doc" 
   src={audioURLRef} 

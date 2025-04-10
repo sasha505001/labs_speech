@@ -6,7 +6,7 @@ import './SendButton.css';
 import './common.css';
 
 
-function SendButton({requestText, recivedBotAnswer}) {
+function SendButton({requestText, recivedBotAnswer, setURLs}) {
   const [isLoading, setIsLoading] = useState(false);
   // принажатии кнопки :
   // отправляю сообщение боту+
@@ -31,7 +31,21 @@ function SendButton({requestText, recivedBotAnswer}) {
         console.log(bot_answer)
         // отправляю ответ бота на сервер
         let data = {"text": bot_answer}
-        response = await axios.post('http://localhost:5000/generate/audios', data);
+        let res_audios = await axios.post('http://localhost:5000/generate/audios', data);
+        if(res_audios.status === 200){
+          // получаю пути к аудиофайлам
+          let audio_names = res_audios.data.names;
+          console.log(audio_names);
+          let base_URL = 'http://localhost:5000/generated_audios/';
+          // Получаю аудиофайлы
+          let gtts = await axios.get(base_URL + audio_names[0], {responseType: 'blob'});
+          let pyttsx3 = await axios.get(base_URL + audio_names[1], {responseType: 'blob'});
+          let mixed = await axios.get(base_URL + audio_names[2], {responseType: 'blob'});
+          gtts = URL.createObjectURL(gtts.data);
+          pyttsx3 = URL.createObjectURL(pyttsx3.data);
+          mixed = URL.createObjectURL(mixed.data);
+          setURLs(gtts, pyttsx3, mixed);
+        }
       }
       else{
         console.log('Ошибка при получении ответа от бота:', response.status);
