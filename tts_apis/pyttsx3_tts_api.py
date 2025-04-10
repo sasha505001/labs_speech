@@ -11,7 +11,6 @@ from concurrent.futures import ThreadPoolExecutor
 # Работает быстро и без ошибок
 def pyttsx3_audio_creator(text, audio_name):
     engine = pyttsx3.init()
-
     # путь к папке со сгенерированными файлами
     path = os.getcwd() + "\\generated_audios\\"
     if not os.path.exists(path):

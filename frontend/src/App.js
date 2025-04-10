@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 import './App.css';
 import TextInput from './components/TextInput';
 import SendButton from './components/SendButton';
@@ -12,10 +12,6 @@ function App() {
   const [gttsURL, setGttsURL] = useState(null); // URL до сгенерированного аудио
   const [pyttsx3URL, setPyttsx3URL] = useState(null); // URL до сгенерированного аудио
   const [mixedURL, setMixedURL] = useState(null); // URL до сгенерированного аудио
-
-  
-  const [audioURL, setAudioURL] = useState(null); // URL до сгенерированного аудио
-  const audioURLRef = useMemo(() =>  audioURL, [audioURL])
   
   const recivedBotAnswer = useCallback((answer) => {
     setAnswerText(answer);
@@ -32,25 +28,21 @@ function App() {
       setMixedURL(mixedURL);
     }
   }
-  useEffect(() => {
-    // console.log('audioURLRef updated in app.js:', audioURLRef);
-    // console.log('audioURL updated in app.js:', audioURL); 
-    setAudioURL(audioURLRef)
-  }, [audioURLRef]);
   
   return (
     <div className="hell">
       <h1>Your Asistent</h1>
 
-      <TextInput text={requestText} setText={setRequestText} />
+      <TextInput text={requestText} setText={setRequestText} isReadOnly={false}/>
       <SendButton 
       requestText = {requestText}  
       recivedBotAnswer = {recivedBotAnswer}
       setURLs = {setURLs}
       />
       <h2>Ответ бота</h2>
-      <label className="all_doc">{answerText ? answerText : 'собщений не было или произошла ошибка'}</label>
+
       
+      <TextInput text={answerText ? answerText : 'собщений не было или произошла ошибка'} setText={setRequestText} isReadOnly={true}/>
       <br />
       <h1>Audio output</h1>  
       <h2>Google TTS</h2>

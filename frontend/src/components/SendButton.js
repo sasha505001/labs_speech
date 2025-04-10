@@ -18,6 +18,10 @@ function SendButton({requestText, recivedBotAnswer, setURLs}) {
   // закидываю каждый файл в плееры
   //
   const handleClicked = async() => {
+    if(requestText===""){
+      alert("Введите текст запроса!");
+      return;
+    }
     setIsLoading(true);
     try {      
       // пишу боту
@@ -51,22 +55,6 @@ function SendButton({requestText, recivedBotAnswer, setURLs}) {
         console.log('Ошибка при получении ответа от бота:', response.status);
         return;
       }
-      
-      // // запрос для конвертации текста в речь
-      // const response = await axios.post('http://localhost:5000/api/generate', data);
-      // // обрабатываю результат запроса
-      // if(response.status === 200){
-      //   // если преобразование прошло успешно
-      //   let path = 'http://localhost:5000/generated_audios/' + response.data.path
-      //   console.log(path) // Путь к файлу на сервере
-      //   await axios.get(path,
-      //     {responseType: 'blob'} 
-      //   ).then(res => {
-      //     let audioBlob = res.data;
-      //     const audioUrl = URL.createObjectURL(audioBlob);
-      //     onConvertClick(audioUrl);
-      //   })
-      // }
     } catch (error) {
       console.error(error);
     } finally
