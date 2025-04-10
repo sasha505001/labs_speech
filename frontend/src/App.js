@@ -3,10 +3,14 @@ import './App.css';
 import TextInput from './components/TextInput';
 import SendButton from './components/SendButton';
 import AudioPlayer from './components/AudioPlayer';
+import AudioRecorder from "./components/AudioRecorder";
 
 function App() { 
-  // Текст запроса
-  const [requestText, setRequestText] = useState('');
+
+  // файл аудиозаписи с запросом
+  const [audioFile, setAudioFile] = useState(null);
+  
+  const [requestText, setRequestText] = useState(''); // Текст запроса
   const [answerText, setAnswerText] = useState(''); // Текст ответа
   // URLs до сгенерированного аудио
   const [gttsURL, setGttsURL] = useState(null); // URL до сгенерированного аудио
@@ -44,13 +48,11 @@ function App() {
     <div className="hell">
       <h1>Your Asistent</h1>
 
-      <TextInput text={requestText} setText={setRequestText} isReadOnly={false}/>
-      <SendButton 
-      requestText = {requestText}  
-      recivedBotAnswer = {recivedBotAnswer}
-      setURLs = {setURLs}
-      setCenterOfMass = {setCenterOfMass}
-      />
+      // кнопка записи
+      <AudioRecorder setAudioFile = {setAudioFile}/>
+
+      <h2>Ваш запрос</h2>
+      <TextInput text={requestText} setText={setRequestText} isReadOnly={true}/>
       <h2>Ответ бота</h2>
 
       
