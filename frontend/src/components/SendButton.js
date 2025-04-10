@@ -6,11 +6,11 @@ import './SendButton.css';
 import './common.css';
 
 
-function SendButton({text, onConvertClick}) {
+function SendButton({requestText, recivedBotAnswer}) {
   const [isLoading, setIsLoading] = useState(false);
   // принажатии кнопки :
-  // отправляю сообщение боту
-  // получаю ответ от бота
+  // отправляю сообщение боту+
+  // получаю ответ от бота+
   // ответ бота отправляю на сервер
   // сервер генерирует 3 аудиофайла
   // шаблон для названия файла
@@ -19,13 +19,25 @@ function SendButton({text, onConvertClick}) {
   //
   const handleClicked = async() => {
     setIsLoading(true);
-    try {
-      // отправляю сообщение боту
-      let bot_mes = {"text": text}
+    try {      
+      // пишу боту
+      let bot_mes = {"text": requestText}
+      let response = await axios.post('http://localhost:5000/write_chatbot', bot_mes);
+      let bot_answer = ""
       // получаю ответ от бота
+      if(response.status === 200){
+        bot_answer = response.data.answer;
+        recivedBotAnswer(bot_answer);
+        console.log(bot_answer)
+        // отправляю ответ бота на сервер
+        let data = {"text": bot_answer}
+        response = await axios.post('http://localhost:5000/generate/audios', data);
+      }
+      else{
+        console.log('Ошибка при получении ответа от бота:', response.status);
+        return;
+      }
       
-      // данные для запроса: модель - текст
-      let data = {"model": selectedModel, "text": text}
       // // запрос для конвертации текста в речь
       // const response = await axios.post('http://localhost:5000/api/generate', data);
       // // обрабатываю результат запроса

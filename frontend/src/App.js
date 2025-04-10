@@ -1,20 +1,24 @@
 import { useCallback, useState, useEffect, useMemo } from "react";
 import './App.css';
-import ModelSelect from './components/ModelSelect';
 import TextInput from './components/TextInput';
-import ConvertButton from './components/ConvertButton';
-import AudioPlayer from './components/AudioPlayer';
-import SupportedLang from './components/SupportedLang';
+import SendButton from './components/SendButton';
+
 
 function App() { 
-  
-  const [models, setModels] = useState([]); // список доступных моделей
-  const [selectedModel, setSelectedModel] = useState(); // выбранная модель
+  // Текст запроса
+  const [requestText, setRequestText] = useState('');
+  const [answerText, setAnswerText] = useState(''); // Текст ответа
+  const [gttsURL, setGttsURL] = useState(""); // URL до сгенерированного аудио
+  const [pyttsx3URL, setPyttsx3URL] = useState(""); // URL до сгенерированного аудио
+  const [mixedURL, setMixedURL] = useState(""); // URL до сгенерированного аудио
+
   const [audioURL, setAudioURL] = useState(null); // URL до сгенерированного аудио
   const audioURLRef = useMemo(() =>  audioURL, [audioURL])
-  const [text, setText] = useState('');
-  const [supportedLang, setSupportedLang] = useState('');
-
+  
+  const recivedBotAnswer = useCallback((answer) => {
+    setAnswerText(answer);
+  });
+  
   const handleConvertClick = useCallback(async (AudioURL) =>  {
     if(AudioURL){
       setAudioURL(AudioURL);
@@ -22,65 +26,30 @@ function App() {
     else
       console.log('AudioURL  is null');
   });
-
-
-  // стартовая фигня по крайней мере 
-  useEffect(() => { 
-    fetch("http://127.0.0.1:5000/apis/names")
-    .then( response => response.json()) 
-    .then(data => {
-      setModels(data)
-      setSelectedModel(data[0]) // выбираю первую модель 
-
-      //----
-      fetch(`http://127.0.0.1:5000/apis/get_supported_languages/${data[0]}`)
-      .then( response => response.json()) 
-      .then(data => {
-        setSupportedLang(data.languages)
-      })
-    })
-    .catch(error => console.error(error))
-    
-  }, [])
   useEffect(() => {
     // console.log('audioURLRef updated in app.js:', audioURLRef);
     // console.log('audioURL updated in app.js:', audioURL); 
     setAudioURL(audioURLRef)
   }, [audioURLRef]);
   
-  
   return (
     <div className="hell">
-      <h1>Text-to-Speech Converter</h1>
+      <h1>Your Asistent</h1>
+
+      <TextInput text={requestText} setText={setRequestText} />
+      <SendButton 
+      requestText = {requestText}  
+      recivedBotAnswer = {recivedBotAnswer}/>
+      <h2>Ответ бота</h2>
+      <label className="all_doc">{answerText ? answerText : 'собщений не было или произошла ошибка'}</label>
       
-      <ModelSelect 
-        models={models} 
-        selectedModel={selectedModel} 
-        setSelectedModel={setSelectedModel} 
-        setSupportedLang={setSupportedLang}
-      />
-      <SupportedLang SupportedLang={supportedLang} />
       <br />
-      <TextInput text={text} setText={setText} />
+      <h1>Audio output</h1>  
       <br />
-      <ConvertButton 
-      selectedModel = {selectedModel} 
-      text = {text}  
-      onConvertClick={handleConvertClick}/>
       
-      <h2>Audio output</h2>
-      {audioURLRef!==null && <AudioPlayer audioURLRef={audioURLRef} />}
-      {/* {audioURL && <audio id="player_audio" className="all_doc" source src={audioURL} controls>Ваш браузер не поддерживает элемент audio.</audio>} */}
-      {audioURL && (
-      <a
-        id="download-link"
-        className="all_doc"
-        href={audioURL}
-        download="audio_file.mp3"
-      >
-        Скачать файл
-      </a>
-    )}
+      <h2>Google TTS</h2>
+      <h2>Pyttsx3</h2>
+      <h2>Mixed</h2>
     </div>
   );
 }
