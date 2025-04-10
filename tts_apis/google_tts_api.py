@@ -7,7 +7,7 @@ import asyncio
 # Google TTS
 # model: Google Text-to-Speech API
 # Языки: Русский, Английский
-def gtts_audio_creator(text):
+def gtts_audio_creator(text, audio_name):
     tts = gTTS(text=text, lang='ru')
     # путь к папке со сгенерированными файлами
     path = os.getcwd() + "\\generated_audios\\"
@@ -20,12 +20,12 @@ def gtts_audio_creator(text):
     return filename
 
 # асинхронная копия функции
-async def gtts_audio_creator_async(text):
+async def gtts_audio_creator_async(text, audio_name):
     tts = gTTS(text=text, lang='ru')
     path = os.getcwd() + "\\generated_audios\\"
     if not os.path.exists(path):
         os.makedirs(path)
-    filename = "gtts_" + str(time.time() * 1000) + ".mp3"
+    filename = audio_name + "_gtts.mp3"
     path = path + filename
     await asyncio.to_thread(tts.save, path)  # Run tts.save in a separate thread
     return filename

@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 # model: eSpeak NG или SAPI5
 # Языки: Русский, Английский
 # Работает быстро и без ошибок
-def pyttsx3_audio_creator(text):
+def pyttsx3_audio_creator(text, audio_name):
     engine = pyttsx3.init()
 
     # путь к папке со сгенерированными файлами
@@ -17,16 +17,16 @@ def pyttsx3_audio_creator(text):
     if not os.path.exists(path):
         os.makedirs(path)
     # Путь к генерируемому файлу
-    filename = "pyttsx3_" + str(time.time() * 1000) + ".mp3"
+    filename = audio_name + "_pyttsx3.mp3"
     path = path + filename
     engine.save_to_file(text, path)
     engine.runAndWait()
     return filename
 
-async def pyttsx3_audio_creator_async(text):
+async def pyttsx3_audio_creator_async(text, audio_name):
     loop = asyncio.get_running_loop()
     with ThreadPoolExecutor() as pool:
-        filename = await loop.run_in_executor(pool, pyttsx3_audio_creator, text)
+        filename = await loop.run_in_executor(pool, pyttsx3_audio_creator, text, audio_name)
     return filename
 
 
