@@ -19,5 +19,5 @@ async def use_gpt4free(prompt):
     return response
 
 
-# Запускаем асинхронную функцию
-asyncio.run(use_gpt4free("что ты умеешь"))
+# # Запускаем асинхронную функцию
+# asyncio.run(use_gpt4free("привет"))

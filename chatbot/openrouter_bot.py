@@ -53,5 +53,5 @@ async def openrouter_chat_async(prompt):
                 raise
 
 # Пример вызова функции
-responce = asyncio.run(openrouter_chat_async("Привет как дела?"))
-print(responce)
+# responce = asyncio.run(openrouter_chat_async("Привет как дела?"))
+# print(responce)
