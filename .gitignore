@@ -8,6 +8,7 @@ frontend/node_modules
 tts_apis/__pycache__
 working_with_audio/__pycache__
 mytest/__pycache__
+chatbot/__pycache__
 # Папки с аудио
 generated_audios
 mytest/test_mix
