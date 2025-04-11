@@ -1,14 +1,10 @@
 import { useCallback, useState, useMemo } from "react";
 import './App.css';
 import TextInput from './components/TextInput';
-import SendButton from './components/SendButton';
 import AudioPlayer from './components/AudioPlayer';
 import AudioRecorder from "./components/AudioRecorder";
 
 function App() { 
-
-  // файл аудиозаписи с запросом
-  const [audioFile, setAudioFile] = useState(null);
   
   const [requestText, setRequestText] = useState(''); // Текст запроса
   const [answerText, setAnswerText] = useState(''); // Текст ответа
@@ -28,9 +24,7 @@ function App() {
     setCenterOfMassMixed(centerOfMassMixed);
   }
 
-  const recivedBotAnswer = useCallback((answer) => {
-    setAnswerText(answer);
-  });
+
   
   async function setURLs(gttsURL, pyttsx3URL, mixedURL){
     if(gttsURL){
@@ -49,7 +43,12 @@ function App() {
       <h1>Your Asistent</h1>
 
       // кнопка записи
-      <AudioRecorder setAudioFile = {setAudioFile}/>
+      <AudioRecorder 
+        setRequestText = {setRequestText}
+        setAnswerText={setAnswerText}
+        setURLs={setURLs}
+        setCenterOfMass={setCenterOfMass}
+      />
 
       <h2>Ваш запрос</h2>
       <TextInput text={requestText} setText={setRequestText} isReadOnly={true}/>

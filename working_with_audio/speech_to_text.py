@@ -1,7 +1,8 @@
 # функция для генерации текста из аудио
 import speech_recognition as sr
 import os
-from working_with_audio.converter_audio import convert_mp3_to_wav
+from working_with_audio.converter_audio import convert_to_wav
+import asyncio
 # импорчу функцию конвертации mp3 в wav
 
 
@@ -13,16 +14,17 @@ langs_dict = {
 # Конвертация речи в файл
 # audio_file_path - путь к аудиофайлу (только .wav и .mp3)
 # language - язык распознавания речи (ru, en)
-def speech_to_text_convert(audio_file_path, language='ru'):
+async def speech_to_text_convert(audio_file_path, language='ru'):
     try:
         # Проверка на существование пути
         if not os.path.exists(audio_file_path):
             raise FileNotFoundError(f"Файл {audio_file_path} не найден")
         
         # если файл mp3, то конвертируем его в wav
-        if audio_file_path.endswith('.mp3'):
-            audio_file_path = convert_mp3_to_wav(audio_file_path)
-        # Создаем объект Recognizer
+        if audio_file_path.endswith('.mp3') or audio_file_path.endswith('.webm'):
+            old_path = audio_file_path
+            audio_file_path = os.path.splitext(audio_file_path)[0] + '.wav'
+            await asyncio.to_thread(convert_to_wav, old_path, audio_file_path)
         r = sr.Recognizer()
         # Открываем аудиофайл
         with sr.AudioFile(audio_file_path) as source:

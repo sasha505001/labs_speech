@@ -6,9 +6,11 @@ from tts_apis import google_tts_api
 from tts_apis import pyttsx3_tts_api
 # Микширование
 from working_with_audio.mix_audio import centroid_mixing_async, spectral_centroid_async
+from working_with_audio.speech_to_text import speech_to_text_convert
 # from working_with_audio.mix_audio import simple_centroid_mix_async
 # Чат бот
 from chatbot.openrouter_bot import openrouter_chat_async
+
 
 import time
 import os
@@ -33,17 +35,42 @@ async def get_centr_of_mass(filename):
         return jsonify({"error": "File not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/process_audio', methods=['POST'])
+async def process_audio():
+    # Получаю файл
+    if 'file' not in request.files:
+        return jsonify({'error': 'Нет файла'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'Файл не выбран'}), 400
     
+    # сохнаняю файл
+    if file:
+        filename = str(time.time() * 1000) + ".webm"
+        full_path = os.path.join(os.getcwd(), "received_audios", 'records', filename)  # Сохранить как .webm
+        file.save(full_path)
+        # получаю текст из аудио
+        text = await speech_to_text_convert(full_path)
+        # я должен отправить текст который ответила нейронка 
+        return jsonify({'text': text}), 200
+
+        
+        
 
 # отправляю созданное аудио клиенту
-@app.route('/generated_audios/<filename>', methods=['GET'])
-def get_audio(filename):
-    if not filename:
-        return jsonify({"error": "No filename provided"}), 400
+@app.route('/generated_audios/<filename>')
+def get_generated_audio(filename):
+    """Обслуживает сгенерированные аудиофайлы."""
+    audio_path = os.path.join(os.getcwd(), "generated_audios", filename)  # Полный путь к файлу
+    if filename.endswith('.wav'):
+        mimetype = 'audio/wav'
+    elif filename.endswith('.mp3'):
+        mimetype = 'audio/mpeg'
     else:
-        path_to_file = os.getcwd() + "\\generated_audios\\" + filename
-        print(path_to_file)
-        return send_file(path_to_file, mimetype="audio/wav" if "wav" in filename else "audio/mp3", as_attachment=True)
+        return jsonify({'error': 'Неподдерживаемый формат файла'}), 400
+
+    return send_file(audio_path, mimetype=mimetype, as_attachment=True, download_name=filename) #Добавлен download_name
     
 # Главная страница сервера
 @app.route('/')
@@ -60,6 +87,7 @@ async def write_chatbot():
         return jsonify({'error': 'No text provided'}), 400
     else:
         answer = await openrouter_chat_async(text)
+        print(answer)
         return jsonify({'answer': answer}), 200
 
 # Код для где выполняется Text-to-Speech

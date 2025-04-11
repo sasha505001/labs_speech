@@ -10,7 +10,9 @@ working_with_audio/__pycache__
 mytest/__pycache__
 chatbot/__pycache__
 # Папки с аудио
-generated_audios
+received_audios
+admin
 mytest/test_mix
+my_voices
 # ключи
 chatbot/keys.json
