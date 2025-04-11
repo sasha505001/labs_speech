@@ -1,8 +1,16 @@
+body {
+  background-color: #d6e6d8; /* светло-серый фон */
+  background-image: none; /* удалить любое изображение фона */
+  background-repeat: no-repeat; /* не повторять фон */
+  background-position: center; /* центрировать фон */
+}
 h1 {
   text-align: center;
+  margin: 20px 40px;
+  padding-bottom: 30px;
 }
 
-h2 {
+h2, h3 {
   margin: 20px 40px;
 }
 

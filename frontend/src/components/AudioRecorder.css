@@ -1,0 +1,13 @@
+.record-button {
+    background-color: #34C759; /* зеленый цвет */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .record-button.recording {
+    background-color: #FF3B30; /* красный цвет */
+  }
+

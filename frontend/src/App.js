@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo } from "react";
+import { useState } from "react";
 import './App.css';
 import TextInput from './components/TextInput';
 import AudioPlayer from './components/AudioPlayer';
@@ -42,7 +42,7 @@ function App() {
     <div className="hell">
       <h1>Your Asistent</h1>
 
-      // кнопка записи
+      
       <AudioRecorder 
         setRequestText = {setRequestText}
         setAnswerText={setAnswerText}
@@ -57,14 +57,14 @@ function App() {
       
       <TextInput text={answerText ? answerText : 'собщений не было или произошла ошибка'} setText={setRequestText} isReadOnly={true}/>
       <br />
-      <h1>Audio output</h1>  
-      <h2>Google TTS</h2>
+      <h2>Audio output</h2>  
+      <h3>Google TTS</h3>
       <label className="all_doc">{"центр масс: " + centerOfMassGtts}</label>
       <AudioPlayer audioURLRef={gttsURL} />
-      <h2>Pyttsx3</h2>
+      <h3>Pyttsx3</h3>
       <label className="all_doc">{"центр масс: " + centerOfMassPyttsx3}</label>
       <AudioPlayer audioURLRef={pyttsx3URL} />
-      <h2>Mixed</h2>
+      <h3>Mixed</h3>
       <label className="all_doc">{"центр масс: " + centerOfMassMixed}</label>
       <AudioPlayer audioURLRef={mixedURL} />
     </div>

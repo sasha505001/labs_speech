@@ -18,4 +18,5 @@ def convert_to_wav(input_path, output_path=None):
         
     # Сохраняем в wav формате
     audio.export(output_path, format="wav")
+    return output_path
     #print(f"Файл сохранён: {output_path}")

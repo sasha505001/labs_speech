@@ -48,28 +48,31 @@ function AudioRecorder({setRequestText, setAnswerText, setURLs, setCenterOfMass 
     };
 
     return (
-        <div>
-          <button onClick={handleRecordClick}>
-            {isRecording ? 'Остановить запись' : 'Начать запись'}
-          </button>
+        <div className="all_doc">
+            <button class="record-button" onClick={handleRecordClick}>
+                {isRecording ? 'Остановить запись' : 'Начать запись'}
+            </button>
 
-          {audioURL && (
-              <div>
-                  <h4>Ваша запись:</h4>
-                  <audio src={audioURL} controls />
-              </div>
-          )}
-
-          {/* Кнопка Отправить */}
-          {audioBlob && 
-              <SendButton 
-                  audioBlob={audioBlob}
-                  setRequestText={setRequestText}
-                  setAnswerText={setAnswerText}
-                  setURLs={setURLs}
-                  setCenterOfMass={setCenterOfMass}
-              />
-          }
+            {audioURL && (
+                <div>
+                    <br />
+                    <label id='audio_label'>Ваша запись:</label>
+                    <br />
+                    <br />
+                    <audio src={audioURL} controls />
+                </div>
+            )}
+            <br />
+            {/* Кнопка Отправить */}
+            {audioBlob && 
+                <SendButton 
+                    audioBlob={audioBlob}
+                    setRequestText={setRequestText}
+                    setAnswerText={setAnswerText}
+                    setURLs={setURLs}
+                    setCenterOfMass={setCenterOfMass}
+                />
+            }
       </div>
   );
 }

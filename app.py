@@ -7,14 +7,15 @@ from tts_apis import pyttsx3_tts_api
 # Микширование
 from working_with_audio.mix_audio import centroid_mixing_async, spectral_centroid_async
 from working_with_audio.speech_to_text import speech_to_text_convert
-# from working_with_audio.mix_audio import simple_centroid_mix_async
+from working_with_audio.verification import is_admin_voice
 # Чат бот
 from chatbot.openrouter_bot import openrouter_chat_async
-
+from working_with_audio.converter_audio import convert_to_wav
 
 import time
 import os
 import asyncio
+
 app = Flask(__name__)
 CORS(app) # Разрешаем запросы с фронтенда (с другого домена/порта)
 
@@ -50,10 +51,17 @@ async def process_audio():
         filename = str(time.time() * 1000) + ".webm"
         full_path = os.path.join(os.getcwd(), "received_audios", 'records', filename)  # Сохранить как .webm
         file.save(full_path)
+        new_audio = convert_to_wav(full_path)
+        admin_path = os.path.join(os.getcwd(), "received_audios", 'admin', 'admin.wav')
+        similarity = is_admin_voice(admin_path, new_audio)
+        str_similarity = str(similarity)
+        print(similarity)
+        if similarity < 0.75:
+            return jsonify({'text': 'Вы не админ', 'is_admin': False, 'similarity': str_similarity}), 200 
         # получаю текст из аудио
         text = await speech_to_text_convert(full_path)
         # я должен отправить текст который ответила нейронка 
-        return jsonify({'text': text}), 200
+        return jsonify({'text': text, 'is_admin': True, 'similarity': str_similarity}), 200
 
         
         

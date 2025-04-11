@@ -12,6 +12,7 @@ chatbot/__pycache__
 # Папки с аудио
 received_audios
 admin
+generated_audios
 mytest/test_mix
 my_voices
 # ключи
