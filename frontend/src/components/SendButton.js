@@ -30,12 +30,12 @@ function SendButton({ audioBlob, setRequestText, setAnswerText, setURLs, setCent
 
       if(response.status === 200){
         let is_admin = response.data.is_admin;
+        let similarity = response.data.similarity;
+        console.log("Similarity: " + similarity);
         if(!is_admin){
           alert("Вы не админ!");
           return;
         }
-        let similarity = response.data.similarity;
-        console.log("Similarity: " + similarity);
         let my_request_text = response.data.text;
         setRequestText(my_request_text);
         let data = {"text": my_request_text};
