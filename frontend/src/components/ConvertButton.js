@@ -18,6 +18,10 @@ function ConvertButton({selectedModel, text, onConvertClick}) {
       const response = await axios.post('http://localhost:5000/api/convert', data);
       // обрабатываю результат запроса
       if(response.status === 200){
+        if (response.data.error){
+          alert(response.data.error);
+          return;
+        }
         // если преобразование прошло успешно
         let path = 'http://localhost:5000/generated_audios/' + response.data.path
         console.log(path) // Путь к файлу на сервере

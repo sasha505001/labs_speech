@@ -1,7 +1,8 @@
 # Server
 from flask import Flask, render_template, request, jsonify, send_file, Response
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 # API
+import re
 from tts_apis import edge_tts_api
 from tts_apis import espeakng_tts_api
 from tts_apis import google_tts_api
@@ -9,11 +10,14 @@ from tts_apis import microsoft_tts_api
 from tts_apis import pyttsx3_tts_api
 from tts_apis import silero_tts_api
 from tts_apis import vosk_tts_api
-
+import time
 import os
 import asyncio
 app = Flask(__name__)
 CORS(app) # Разрешаем запросы с фронтенда (с другого домена/порта)
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app, origins=["http://localhost:3000"]) 
+
 
 API_AND_SUPP_LANG = {
     "Edge TTS": "ru",
@@ -37,6 +41,7 @@ MY_API_TTS = {
 }
 
 # отправляю созданное аудио клиенту
+
 @app.route('/generated_audios/<filename>', methods=['GET'])
 def get_audio(filename):
     if not filename:
@@ -51,7 +56,7 @@ def get_audio(filename):
 @app.route('/apis/get_supported_languages/<api_name>', methods=['GET'])
 def get_supported_languages(api_name):
     if api_name not in API_AND_SUPP_LANG:
-        return jsonify({"error": "API not found"}), 404
+        return jsonify({"error": "API not found"}), 404 
     sup_lang = API_AND_SUPP_LANG[api_name]
     return jsonify({"languages": sup_lang})
 
@@ -65,6 +70,10 @@ async def use_tts_my_apis(text, api_name):
     if api_name in MY_API_TTS:
         try:
             filename = await MY_API_TTS[api_name](text)
+            wait_time = 0
+            while not os.path.exists(filename) and wait_time < 2:
+                time.sleep(0.1)
+                wait_time += 0.1
             print(filename)
             return filename 
         except Exception as e:
@@ -109,7 +118,20 @@ async def convert_text_to_speech():
     if not text: 
         return jsonify({'error': 'No text provided'}), 400
     try:
+        langs = API_AND_SUPP_LANG[model]
+        right_lang = False;
+        if langs == "en, ru":
+            path_to_audio = await use_tts_my_apis(text, model)
+            right_lang = True
+        elif langs == "ru":
+            right_lang = re.search(r'[а-яА-ЯёЁ]', text) 
+        elif langs == "en":
+            right_lang = re.search(r'[a-zA-Z]', text)
+        if not right_lang:
+            return jsonify({'error': 'Unsupported language'}), 200
         path_to_audio = await use_tts_my_apis(text, model)
+        
+        
         return jsonify({'path': path_to_audio}), 200
     except Exception as e:
         return jsonify({'error': str("что то пошло не так")}), 500
