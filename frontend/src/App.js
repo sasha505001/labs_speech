@@ -5,6 +5,7 @@ import SendButton from './components/SendButton';
 import AudioPlayer from './components/AudioPlayer';
 
 function App() { 
+  const [isLoading, setIsLoading] = useState(false);
   // Текст запроса
   const [requestText, setRequestText] = useState('');
   const [answerText, setAnswerText] = useState(''); // Текст ответа
@@ -46,17 +47,20 @@ function App() {
 
       <TextInput text={requestText} setText={setRequestText} isReadOnly={false}/>
       <SendButton 
+      isLoading = {isLoading}
+      setIsLoading = {setIsLoading}
       requestText = {requestText}  
       recivedBotAnswer = {recivedBotAnswer}
       setURLs = {setURLs}
       setCenterOfMass = {setCenterOfMass}
       />
       <h2>Ответ бота</h2>
-
-      
       <TextInput text={answerText ? answerText : 'собщений не было или произошла ошибка'} setText={setRequestText} isReadOnly={true}/>
+
       <br />
       <h1>Audio output</h1>  
+      {isLoading ? null :
+      <div>
       <h2>Google TTS</h2>
       <label className="all_doc">{"центр масс: " + centerOfMassGtts}</label>
       <AudioPlayer audioURLRef={gttsURL} />
@@ -66,6 +70,8 @@ function App() {
       <h2>Mixed</h2>
       <label className="all_doc">{"центр масс: " + centerOfMassMixed}</label>
       <AudioPlayer audioURLRef={mixedURL} />
+      </div>
+}
     </div>
   );
 }

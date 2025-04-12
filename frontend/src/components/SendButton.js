@@ -6,8 +6,8 @@ import './SendButton.css';
 import './common.css';
 
 
-function SendButton({requestText, recivedBotAnswer, setURLs, setCenterOfMass}) {
-  const [isLoading, setIsLoading] = useState(false);
+function SendButton({isLoading, setIsLoading,requestText, recivedBotAnswer, setURLs, setCenterOfMass}) {
+  
   // принажатии кнопки :
   // отправляю сообщение боту+
   // получаю ответ от бота+

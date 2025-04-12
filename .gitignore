@@ -13,4 +13,5 @@ chatbot/__pycache__
 generated_audios
 mytest/test_mix
 # ключи
+received_audios
 chatbot/keys.json
